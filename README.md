@@ -58,14 +58,8 @@ module.exports = {
 Specify the binary path of postcss-cli, specify the CSS file to be processed, and add postcss to the pipeline stages.
 
 ```
-postcss / PostcssKeys.binaryFile := {
-  if (isWin) {
-    (new File(".") / "node_modules" / ".bin" / "postcss.cmd").getAbsolutePath
-  } else {
-    (new File(".") / "node_modules" / ".bin" / "postcss").getAbsolutePath
-  }
-},
-postcss / PostcssKeys.inputFile := "./public/stylesheets/tailwindbase.css",
+postcss / PostcssKeys.binaryFile := (new File(".") / "node_modules" / ".bin" / "postcss").getAbsolutePath
+postcss / PostcssKeys.inputFile := "./public/stylesheets/tailwindbase.css"
 Assets / pipelineStages ++= Seq(postcss)
 ```
 
