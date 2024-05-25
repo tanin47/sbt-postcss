@@ -3,7 +3,7 @@ sbt-postcss
 
 With sbt-postcss, you can execute [Postcss](https://postcss.org/) during Playframework's hot-reload and stage. It works with both `sbt run` and `sbt stage`.
 
-The initial use case is to support Tailwindcss with [sbt-svelte]https://github.com/tanin47/sbt-svelte) in Playframework.
+The initial use case is to support Tailwindcss with [sbt-svelte](https://github.com/tanin47/sbt-svelte) in Playframework.
 
 It currently only supports processing only one file for now.
 
