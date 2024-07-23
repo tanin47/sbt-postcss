@@ -10,7 +10,6 @@ class HomeController @Inject()(controllerComponents: ControllerComponents)(impli
     extends AbstractController(controllerComponents) {
 
   def index = Action.async {
-    throw new Error()
     Future(Ok(views.html.index("Welcome to <b>sbt-svelte</b></script>")))
   }
 }
