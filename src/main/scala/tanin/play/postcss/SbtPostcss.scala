@@ -37,7 +37,7 @@ object Import {
 
   object PostcssKeys {
     val binaryFile = TaskKey[String]("postcss-cli-binary", "The postcss CLI binary.")
-    val inputFile = TaskKey[String]("postcss-input-file", "The input file for postcss-cli. We support only 1 input file for now.")
+    val assetPath = TaskKey[String]("postcss-asset-path", "The input asset path for postcss-cli. We support only 1 input file for now.")
     val nodeModulesPath = TaskKey[String]("postcss-node-modules-path", "The location of the node_modules. Default: ./node_modules")
   }
 
@@ -67,17 +67,17 @@ object SbtPostcss extends AutoPlugin {
     val include = (postcss / includeFilter).value
     val exclude = (postcss / excludeFilter).value
     val binaryFilePath = (postcss / binaryFile).value
-    val inputFilePath = (postcss / inputFile).value
+    val inputAssetPath = (postcss / assetPath).value
     val target = webTarget.value / postcss.key.label
     val logger = (Assets / streams).value.log
     val nodeModulesLocation = (postcss / nodeModulesPath).value
     val shell = new Shell
 
-    { mappings => 
+    { mappings =>
       PostcssStage.run(
         mappings = mappings.filter { case (file, output) => include.accept(file) && !exclude.accept(file) },
         binaryFilePath = binaryFilePath,
-        inputFilePath = inputFilePath,
+        inputAssetPath = inputAssetPath,
         targetDir = target,
         nodeModulesPath = nodeModulesLocation,
         logger = logger,
@@ -91,25 +91,23 @@ object SbtPostcss extends AutoPlugin {
     def run(
       mappings: Seq[PathMapping],
       binaryFilePath: String,
-      inputFilePath: String,
+      inputAssetPath: String,
       targetDir: File,
       nodeModulesPath: String,
       logger: ManagedLogger,
       shell: Shell
     ): Seq[PathMapping] = {
-      val inputFile = new File(inputFilePath)
       val (inputEntries, ignoreds) = mappings
         .partition { case (file, path) =>
-          file.getCanonicalPath == inputFile.getCanonicalPath
+          path == inputAssetPath
         }
-
-      val outputFile = targetDir / inputFile.getName
 
       val processeds = inputEntries
         .map { case (file, path) =>
+          val outputFile = targetDir / path
           val cmd = Seq(
             binaryFilePath,
-            inputFilePath,
+            file.getCanonicalPath,
             "--config",
             ".",
             "--output",
