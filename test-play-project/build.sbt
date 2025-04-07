@@ -31,8 +31,9 @@ lazy val root = (project in file("."))
         (new File(".") / "node_modules" / ".bin" / "postcss").getAbsolutePath
       }
     },
-    postcss / PostcssKeys.inputFile := "./public/stylesheets/tailwindbase.css",
-    Assets / pipelineStages ++= Seq(postcss)
+    postcss / PostcssKeys.assetPath := "stylesheets/tailwindbase.css",
+    pipelineStages ++= Seq(postcss),
+    TestAssets / pipelineStages ++= Seq(postcss)
   )
 
 addCommandAlias(
