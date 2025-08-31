@@ -59,7 +59,7 @@ Specify the binary path of postcss-cli, specify the CSS file to be processed, an
 
 ```
 postcss / PostcssKeys.binaryFile := (new File(".") / "node_modules" / ".bin" / "postcss").getAbsolutePath
-postcss / PostcssKeys.inputFile := "./public/stylesheets/tailwindbase.css"
+postcss / PostcssKeys.inputFile := "stylesheets/tailwindbase.css"
 Assets / pipelineStages ++= Seq(postcss)
 ```
 
